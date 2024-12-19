@@ -1700,9 +1700,12 @@ int _tmain(int argc, TCHAR *argv[])
             TCHAR *Context;
             TCHAR *Token = _tcstok_s(argv[i], Delim, &Context);
             while(Token && NameFilterCount < MAX_NAMEPARTS) {
-              strcpy_s(NameFilterList[NameFilterCount++], sizeof(Token) < MAX_NAMEPARTSIZE ? sizeof(Token) : MAX_NAMEPARTSIZE, Token);
+              ConPrintf(_T("debug1: %d %d %d\n"), sizeof(NameFilterList[NameFilterCount]), sizeof(TCHAR), _tcslen(Token));
+              _tcsncpy_s(NameFilterList[NameFilterCount++], MAX_NAMEPARTSIZE + 1, Token, MAX_NAMEPARTSIZE);
+              ConPrintf(_T("debug: %s\n"), NameFilterList[NameFilterCount-1]);
               Token = _tcstok_s(0, Delim, &Context);
             }
+            return EXIT_SUCCESS;
 
             if (NameFilterCount != 0) {
               FilterByName = TRUE;
