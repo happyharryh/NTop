@@ -1699,8 +1699,16 @@ int _tmain(int argc, TCHAR *argv[])
             const TCHAR *Delim = _T(",");
             TCHAR *Context;
             TCHAR *Token = _tcstok_s(argv[i], Delim, &Context);
+            TCHAR a[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
+            TCHAR b[] = { 11, 22, 0, 33, 44, 0 };
+            _tcsncpy_s(a, 10, b, 9);
+            for (i = 0; i < 10; i++) {
+                ConPrintf(_T("%d "), a[i]);
+            }
+            ConPrintf(_T("\n"));
+            return EXIT_SUCCESS;
             while(Token && NameFilterCount < MAX_NAMEPARTS) {
-              strcpy_s(NameFilterList[NameFilterCount++], sizeof(Token) < MAX_NAMEPARTSIZE ? sizeof(Token) : MAX_NAMEPARTSIZE, Token);
+              _tcsncpy_s(NameFilterList[NameFilterCount++], MAX_NAMEPARTSIZE+1, Token, MAX_NAMEPARTSIZE);
               Token = _tcstok_s(0, Delim, &Context);
             }
 
