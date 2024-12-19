@@ -525,7 +525,7 @@ static DWORD PidFilterList[1024];
 static DWORD PidFilterCount;
 
 static BOOL FilterByName = FALSE;
-static TCHAR NameFilterList[MAX_NAMEPARTS][MAX_NAMEPARTSIZE+1];
+static TCHAR NameFilterList[MAX_NAMEPARTSIZE+1][MAX_NAMEPARTS];
 static DWORD NameFilterCount;
 
 static void SelectProcess(DWORD Index)
@@ -1700,9 +1700,11 @@ int _tmain(int argc, TCHAR *argv[])
             TCHAR *Context;
             TCHAR *Token = _tcstok_s(argv[i], Delim, &Context);
             while(Token && NameFilterCount < MAX_NAMEPARTS) {
-              strcpy_s(NameFilterList[NameFilterCount++], sizeof(Token) < MAX_NAMEPARTSIZE ? sizeof(Token) : MAX_NAMEPARTSIZE, Token);
+              _tcscpy_s(NameFilterList[NameFilterCount++], MAX_NAMEPARTSIZE, Token);
+              ConPrintf(_T("debug: %s\n"), NameFilterList[NameFilterCount-1]);
               Token = _tcstok_s(0, Delim, &Context);
             }
+            return EXIT_SUCCESS;
 
             if (NameFilterCount != 0) {
               FilterByName = TRUE;
